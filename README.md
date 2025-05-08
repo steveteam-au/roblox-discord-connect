@@ -18,10 +18,10 @@ This project provides a simple verification command that connects a **Roblox use
 
 ## 📦 Tech Stack
 
-- Python 3.9+
+- [Python 3.9+](https://www.python.org/downloads/)
 - [nextcord](https://github.com/nextcord/nextcord)
-- aiohttp
-- Roblox Public APIs
+- [aiohttp](https://pypi.org/project/aiohttp/)
+- [Roblox Public APIs](https://www.roblox.com/)
 
 ---
 
