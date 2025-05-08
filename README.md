@@ -8,7 +8,7 @@ This project provides a simple verification command that connects a **Roblox use
 
 ## 🚀 Features
 
-- Simple command 
+- Simple command  
 - Roblox group membership check via Roblox API  
 - Role management based on verification  
 - No database required — API-only solution  
@@ -30,7 +30,8 @@ This project provides a simple verification command that connects a **Roblox use
 We provide this code **as-is**, under the terms of the MIT License.
 
 > **We do not guarantee** this code will perfectly work for your environment or use case.  
-> Please test thoroughly and modify as needed to suit your needs.
+> Please test thoroughly and modify as needed to suit your needs.  
+> **We are not responsible for any issues, bugs, damages, or losses** caused by the use of this code in any way.
 
 ---
 
