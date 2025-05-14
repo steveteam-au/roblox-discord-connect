@@ -1,32 +1,27 @@
 import time
 import requests
 import aiohttp
-import discord
-from discord.ext import commands
-from discord import app_commands
+import nextcord
+from nextcord.ext import commands
+from nextcord import Interaction, SlashOption
 
-GROUP_ID = 0
-ROLE_ID = 0
-REMOVE_ROLE_ID = 0
+GROUP_ID = 0  # 여기에 실제 ROBLOX 그룹 ID 입력
+ROLE_ID = 0  # 인증 성공시 부여할 역할 ID
+REMOVE_ROLE_ID = 0  # 제거할 역할 ID
 REMOVE_ROLE = True
 
-intents = discord.Intents.default()
+intents = nextcord.Intents.default()
 intents.members = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
-tree = bot.tree
 
-@tree.command(name="인증", description="인증 절차를 진행합니다.")
-@app_commands.describe(
-    닉네임="로블록스 닉네임을 입력하세요.",
-    고유번호="고유번호를 입력하세요."
-)
+@bot.slash_command(name="인증", description="인증 절차를 진행합니다.")
 async def verify(
-    interaction: discord.Interaction,
-    닉네임: str,
-    고유번호: int
+    interaction: Interaction,
+    닉네임: str = SlashOption(description="로블록스 닉네임을 입력하세요."),
+    고유번호: int = SlashOption(description="고유번호를 입력하세요.")
 ):
-    await interaction.response.defer(thinking=True)
+    await interaction.response.defer(with_message=True)
 
     print(f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] /인증 사용: {interaction.user} - 채널: {interaction.channel.name}")
 
@@ -49,7 +44,7 @@ async def verify(
             raise Exception("API 호출 실패")
     except Exception as e:
         print(f"닉네임 확인 실패: {e}")
-        error_embed = discord.Embed(
+        error_embed = nextcord.Embed(
             title="닉네임 확인 실패",
             description="닉네임을 찾을 수 없습니다. 정확히 입력하셨는지 확인해주세요.",
             color=0xff0000
@@ -85,20 +80,20 @@ async def verify(
             try:
                 new_nick = f"{unique_number} | {roblox_username} | 시민"
                 await member.edit(nick=new_nick)
-            except discord.Forbidden:
+            except nextcord.Forbidden:
                 print("닉네임 변경 권한 없음")
 
-            success_embed = discord.Embed(
+            success_embed = nextcord.Embed(
                 title="인증 완료!",
                 color=0x00ff00
             )
             success_embed.add_field(name="로블록스 닉네임", value=roblox_username, inline=True)
             success_embed.add_field(name="고유번호", value=unique_number, inline=True)
             await interaction.followup.send(embed=success_embed)
-        except discord.Forbidden:
+        except nextcord.Forbidden:
             await interaction.followup.send(content="❌ 봇에게 역할 부여 권한이 없습니다.")
     else:
-        fail_embed = discord.Embed(
+        fail_embed = nextcord.Embed(
             title="그룹 미가입",
             color=0xff0000
         )
@@ -110,7 +105,10 @@ async def verify(
 @bot.event
 async def on_ready():
     print(f"✅ 봇 로그인됨: {bot.user}")
-    await tree.sync()
-    print("🌐 슬래시 명령어 동기화 완료")
+    try:
+        synced = await bot.sync_all_application_commands()
+        print(f"🌐 슬래시 명령어 동기화 완료 ({len(synced)}개)")
+    except Exception as e:
+        print(f"명령어 동기화 실패: {e}")
 
 bot.run("YOUR_DISCORD_BOT_TOKEN")
