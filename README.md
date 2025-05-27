@@ -48,5 +48,5 @@ Feel free to fork, modify, and contribute via pull requests.
 
 ---
 
-**Made by Steve Team AU 🇦🇺**
-Based in Sydney 🐨🌉
+**Made by Steve Team JP 🇯🇵**  
+Based in Tokyo 🗾🗼
